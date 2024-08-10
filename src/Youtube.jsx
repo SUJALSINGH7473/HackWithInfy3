@@ -1,12 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
-
+import { st } from "./Transcript";
 // import { YoutubeTranscript } from "youtube-transcript";
 import "./youtube.css";
 import YouTube from "react-youtube";
 import parseTranscript from "./TranscriptParser";
 import { useQuery } from "@tanstack/react-query";
 const transcript = parseTranscript(st);
-console.log(transcript);
+//console.log(transcript);
 function youtube_parser(url) {
   var regExp =
     /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
