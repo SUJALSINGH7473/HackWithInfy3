@@ -1,0 +1,12 @@
+.transcript {
+  height: 300px;
+  overflow-y: auto;
+}
+
+.transcript p {
+  cursor: pointer;
+}
+
+.transcript p.active {
+  background-color: yellow;
+}
