@@ -1,9 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
-import { st } from "./Transcript";
-import { YoutubeTranscript } from "youtube-transcript";
+
+// import { YoutubeTranscript } from "youtube-transcript";
 import "./youtube.css";
 import YouTube from "react-youtube";
 import parseTranscript from "./TranscriptParser";
+import { useQuery } from "@tanstack/react-query";
 const transcript = parseTranscript(st);
 console.log(transcript);
 function youtube_parser(url) {
@@ -29,24 +30,21 @@ function VideoPlayer({ videoUrl }) {
     if (activeEntry && transcriptRef.current) {
       const activeElement = transcriptRef.current.querySelector(".active");
       if (activeElement) {
-        activeElement.scrollIntoView({ behavior: "smooth", block: "center" });
+        activeElement.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+          inline: "start",
+        });
       }
     }
-  }, [currentTime, transcript]);
-  // Transcript data (you'd typically load this from an API or file)
-
-  //   const fetchTranscript = async () => {
-  //     try {
-  //       const response = await YoutubeTranscript.fetchTranscript(videoId);
-  //       const data = await response.json();
-  //       console.log(data);
-  //       // Process the caption data...
-  //     } catch (error) {
-  //       console.error("Error fetching transcript:", error);
-  //     }
-  //   };
-  //fetchTranscript();
-
+  }, [currentTime]);
+  const { isLoading, error, data } = useQuery({
+    queryKey: `${videoId}-transcript`,
+    queryFn: () =>
+      fetch(`http://localhost:5000/api/data?vId=${videoId}`).then((res) =>
+        res.json()
+      ),
+  });
   const onReady = (event) => {
     setPlayer(event.target);
   };
@@ -66,6 +64,8 @@ function VideoPlayer({ videoUrl }) {
       player.seekTo(time);
     }
   };
+  if (isLoading) return <div>Loading...</div>;
+  //console.log(data);
 
   return (
     <div>
@@ -73,13 +73,23 @@ function VideoPlayer({ videoUrl }) {
         videoId={videoId}
         onReady={onReady}
         onStateChange={onStateChange}
+        style={{ position: "fixed", top: "3rem", left: "20rem" }}
       />
-      <div className="transcript" ref={transcriptRef}>
-        {transcript.map((entry, index) => (
+
+      <div
+        className="transcript"
+        ref={transcriptRef}
+        style={{ position: "fixed", top: "26rem", left: "30rem" }}
+      >
+        {data.map((entry, index) => (
           <p
             key={index}
-            className={currentTime >= entry.time ? "active" : ""}
-            onClick={() => handleTranscriptClick(entry.time)}
+            className={
+              currentTime >= entry.start && entry.start >= currentTime - 2.75
+                ? "active"
+                : ""
+            }
+            onClick={() => handleTranscriptClick(entry.start)}
           >
             {entry.text}
           </p>
