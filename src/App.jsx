@@ -1,4 +1,5 @@
 import "./App.css";
+import Home from "./Homepage";
 import VideoPlayer from "./Youtube";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 const queryClient = new QueryClient({
@@ -12,7 +13,7 @@ const queryClient = new QueryClient({
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <VideoPlayer videoUrl="https://www.youtube.com/watch?v=Fcammw5Dh2Y" />
+      <Home />
     </QueryClientProvider>
   );
 }
