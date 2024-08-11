@@ -1,6 +1,7 @@
 .transcript {
   height: 300px;
   overflow-y: auto;
+  color: "black" !important;
 }
 
 .transcript p {

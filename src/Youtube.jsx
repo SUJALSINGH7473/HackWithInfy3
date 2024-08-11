@@ -7,6 +7,10 @@ import parseTranscript from "./TranscriptParser";
 import { useQuery } from "@tanstack/react-query";
 const transcript = parseTranscript(st);
 //console.log(transcript);
+const chats = [
+  { text: "dskjhgbksbakjbgks", id: 0 },
+  { text: "iodsyfius", id: 1 },
+];
 function youtube_parser(url) {
   var regExp =
     /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
@@ -18,7 +22,7 @@ function VideoPlayer({ videoUrl }) {
   const [currentTime, setCurrentTime] = useState(0);
   const transcriptRef = useRef(null);
   const videoId = youtube_parser(videoUrl);
-  console.log(videoId);
+  //console.log(videoId);
   useEffect(() => {
     const activeEntry = transcript.find(
       (entry, index) =>
@@ -29,6 +33,7 @@ function VideoPlayer({ videoUrl }) {
 
     if (activeEntry && transcriptRef.current) {
       const activeElement = transcriptRef.current.querySelector(".active");
+      // console.log(activeElement.value);
       if (activeElement) {
         activeElement.scrollIntoView({
           behavior: "smooth",
@@ -73,13 +78,13 @@ function VideoPlayer({ videoUrl }) {
         videoId={videoId}
         onReady={onReady}
         onStateChange={onStateChange}
-        style={{ position: "fixed", top: "3rem", left: "20rem" }}
+        style={{ position: "fixed", top: "3rem", left: "10rem" }}
       />
 
       <div
         className="transcript"
         ref={transcriptRef}
-        style={{ position: "fixed", top: "26rem", left: "30rem" }}
+        style={{ position: "fixed", top: "26rem", left: "20rem" }}
       >
         {data.map((entry, index) => (
           <p
@@ -94,6 +99,44 @@ function VideoPlayer({ videoUrl }) {
             {entry.text}
           </p>
         ))}
+      </div>
+      <div
+        style={{
+          position: "fixed",
+          height: "22rem",
+          width: "20rem",
+          top: "3rem",
+          left: "52rem",
+          border: "solid black",
+        }}
+      >
+        <div style={{ height: "80%", width: "100%" }}>
+          {chats.map((dt, i) => {
+            return (
+              <div
+                key={i}
+                style={{
+                  width: "80%",
+                  textWrap: "wrap",
+                  float: dt.id ? "left" : "right",
+                  textAlign: dt.id ? "left" : "right",
+                }}
+              >
+                {dt.text}
+              </div>
+            );
+          })}
+        </div>
+        <div style={{ height: "20%", display: "flex" }}>
+          <textarea style={{ width: "80%", height: "90%" }} />
+          <button
+            onClick={() => {
+              console.log("pikachu");
+            }}
+          >
+            {">>>"}
+          </button>
+        </div>
       </div>
     </div>
   );
