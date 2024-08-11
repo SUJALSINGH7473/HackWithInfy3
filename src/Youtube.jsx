@@ -12,9 +12,9 @@ const chats = [
   { text: "iodsyfius", id: 1 },
 ];
 function youtube_parser(url) {
-  var regExp =
-    /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+  var regExp =  /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
   var match = url.match(regExp);
+  console.log(url)
   return match && match[7].length == 11 ? match[7] : false;
 }
 function VideoPlayer({ videoUrl }) {
@@ -72,74 +72,126 @@ function VideoPlayer({ videoUrl }) {
   if (isLoading) return <div>Loading...</div>;
   //console.log(data);
 
-  return (
-    <div>
-      <YouTube
-        videoId={videoId}
-        onReady={onReady}
-        onStateChange={onStateChange}
-        style={{ position: "fixed", top: "3rem", left: "10rem" }}
-      />
-
-      <div
-        className="transcript"
-        ref={transcriptRef}
-        style={{ position: "fixed", top: "26rem", left: "20rem" }}
-      >
-        {data.map((entry, index) => (
-          <p
-            key={index}
-            className={
-              currentTime >= entry.start && entry.start >= currentTime - 2.75
-                ? "active"
-                : ""
-            }
-            onClick={() => handleTranscriptClick(entry.start)}
-          >
-            {entry.text}
-          </p>
-        ))}
-      </div>
-      <div
-        style={{
-          position: "fixed",
-          height: "22rem",
-          width: "20rem",
-          top: "3rem",
-          left: "52rem",
-          border: "solid black",
-        }}
-      >
-        <div style={{ height: "80%", width: "100%" }}>
-          {chats.map((dt, i) => {
-            return (
-              <div
-                key={i}
-                style={{
-                  width: "80%",
-                  textWrap: "wrap",
-                  float: dt.id ? "left" : "right",
-                  textAlign: dt.id ? "left" : "right",
-                }}
-              >
-                {dt.text}
-              </div>
-            );
-          })}
-        </div>
-        <div style={{ height: "20%", display: "flex" }}>
-          <textarea style={{ width: "80%", height: "90%" }} />
-          <button
-            onClick={() => {
-              console.log("pikachu");
+    
+      return (
+        <div style={{ backgroundColor: "#f0f0f0", padding: "2rem", maxWidth: "1200px", margin: "0 auto" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              padding: "2rem",
+              border: "1px solid #ccc",
+              borderRadius: "5px",
+              backgroundColor: "#fff",
             }}
           >
-            {">>>"}
-          </button>
+            <div
+              style={{
+                flex: "2",
+                marginRight: "40px", // added some margin to the right
+              }}
+            >
+              <YouTube
+                videoId={videoId}
+                onReady={onReady}
+                onStateChange={onStateChange}
+                style={{ maxWidth: "700px" }}
+              />
+              <div
+                className="transcript"
+                ref={transcriptRef}
+                style={{
+                  maxWidth: "700px",
+                  padding: "0 1rem",
+                  backgroundColor: "#fff",
+                  border: "1px solid #ccc",
+                  borderRadius: "5px",
+                  overflow: "auto",
+                  height: "150px",
+                  marginTop: "1rem",
+                }}
+              >
+                {data.map((entry, index) => (
+                  <p
+                    key={index}
+                    className={
+                      currentTime >= entry.start && entry.start >= currentTime - 2.75
+                        ? "active"
+                        : ""
+                    }
+                    onClick={() => handleTranscriptClick(entry.start)}
+                  >
+                    {entry.text}
+                  </p>
+                ))}
+              </div>
+            </div>
+            <div
+              style={{
+                flex: "1",
+                maxWidth: "400px",
+                padding: "1rem",
+                border: "1px solid #ccc",
+                borderRadius: "5px",
+                backgroundColor: "#fff",
+                overflow: "hidden",
+              }}
+            >
+              <div
+                style={{
+                  height: "100%",
+                  width: "100%",
+                  padding: "1rem",
+                  overflowY: "auto",
+                }}
+              >
+                {chats.map((dt, i) => {
+                  return (
+                    <div
+                      key={i}
+                      style={{
+                        backgroundColor: "#ddd",
+                        padding: "0.5rem",
+                        borderRadius: "5px",
+                        marginBottom: "0.5rem",
+                        width: "80%",
+                        textAlign: dt.id ? "left" : "right",
+                      }}
+                    >
+                      {dt.text}
+                    </div>
+                  );
+                })}
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  padding: "1rem",
+                }}
+              >
+                <textarea style={{ flexGrow: 1, border: "none", background: "none" }} />
+                <button
+                  style={{
+                    padding: "0.5rem 1rem",
+                    backgroundColor: "#007bff",
+                    color: "#fff",
+                    border: "none",
+                    borderRadius: "5px",
+                    cursor: "pointer",
+                  }}
+                  
+                  onClick={() => {
+                    console.log("pikachu");
+                  }}
+                >
+                  {">>>"}
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-  );
-}
-
-export default VideoPlayer;
+      );
+    };
+    
+    export default VideoPlayer;
