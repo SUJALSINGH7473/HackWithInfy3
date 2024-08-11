@@ -14,7 +14,7 @@ def hello():
 def get_data():
     query = request.args.get('vId')
     
-    ele=YouTubeTranscriptApi.get_transcript(query)
+    ele=YouTubeTranscriptApi.get_transcript(query,languages=['en'])
     return jsonify(ele)
 
 @app.route('/api/item', methods=['POST'])
