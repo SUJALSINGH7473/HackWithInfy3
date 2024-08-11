@@ -5,7 +5,7 @@ export default function Home() {
   const [url, setUrl] = useState("");
   return (
     <>
-      <div style={{ position: "fixed", top: "1rem", display: "flex" }}>
+      <div style={{ display: "flex" }}>
         <input type="text" id="urlIn" />
         <button
           onClick={() => {
